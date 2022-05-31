@@ -11,6 +11,7 @@ import { newKitFromWeb3 } from "@celo/contractkit";
 import BigNumber from "bignumber.js";
 
 import IERC from "./contracts/IERC.abi.json";
+import quotesAbi from "./contracts/quotes.abi.json";
 import { Quotes } from './components/quotes';
 
 
@@ -60,7 +61,7 @@ function App() {
       const balance = await kit.getTotalBalance(address);
       const USDBalance = balance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2);
 
-      const contract = new kit.web3.eth.Contract(quotes, contractAddress);
+      const contract = new kit.web3.eth.Contract(quotesAbi, contractAddress);
       setcontract(contract);
       setcUSDBalance(USDBalance);
     } catch (error) {
@@ -130,7 +131,7 @@ function App() {
       await cUSDContract.methods
         .approve(contractAddress, cost)
         .send({ from: address });
-      await contract.methods.increaseHelpfullness(_index, cost).send({ from: address });
+      await contract.methods.addHelpfullness(_index, cost).send({ from: address });
       getQuotes();
       getBalance();
       alert("you have successfully donated to the writer");

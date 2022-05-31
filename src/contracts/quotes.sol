@@ -25,8 +25,11 @@ contract Motivate {
         uint helpfull;
     }
 
+    event createQuoteEvent(address indexed creator, string quote);
+
     mapping (uint => Quote) internal quotes;
 
+    // create a new Quote
     function writeQuote(
         string memory _text
     ) public {
@@ -36,12 +39,15 @@ contract Motivate {
             _text,
             _helpfull
         );
+        
+        emit createQuoteEvent(payable(msg.sender), _text);
         quotesLength++;
     }
 
+    // return quote at index @_index
     function readQuotes(uint _index) public view returns (
         address payable,
-        string memory, 
+        string memory,
         uint
     ) {
         return (
@@ -51,16 +57,19 @@ contract Motivate {
            
         );
     }
-    
+
+// edit quote at index @_index with text @_text
 function editQuote(uint _index, string memory _text) public {
     require(msg.sender == quotes[_index].owner, "you cannot edit this quote");
     quotes[_index].text = _text;
 }
 
+// increase helpfulness of quote at index @_index by 1
 function increaseHelpfullness(uint _index) private {
     quotes[_index].helpfull ++;
 }
 
+// tip author of quote with 1 cUSD
     function addHelpfullness(uint _index, uint _price) public payable  {
         require(_price == 1, "can only tip 1 cUSD");
         require(
@@ -74,6 +83,7 @@ function increaseHelpfullness(uint _index) private {
         increaseHelpfullness(_index);
     }
     
+    // return length of quote
     function getQuotesLength() public view returns (uint) {
         return (quotesLength);
     }
