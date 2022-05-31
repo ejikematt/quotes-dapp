@@ -23,8 +23,9 @@ export const Quotes = (props) => {
   <div class="form-r">
       <input type="text" class="form-control mt-4" value={newquote}
            onChange={(e) => setNewQuote(e.target.value)} placeholder="enter quote"/>
-
-      <button type="button" onClick={()=>props.editQuote(q.index, newquote)} class="btn btn-primary mt-2">edit quote</button>
+          {props.userWallet === q.owner && (
+            <button type="button" onClick={()=>props.editQuote(q.index, newquote)} class="btn btn-primary mt-2">edit quote</button>
+          )}      
   </div>
 </form>
       
