@@ -48,7 +48,6 @@ contract Motivate {
              quotes[_index].owner,
             quotes[_index].text, 
              quotes[_index].helpfull
-           
         );
     }
     

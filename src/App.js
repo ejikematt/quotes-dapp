@@ -10,6 +10,7 @@ import Web3 from "web3";
 import { newKitFromWeb3 } from "@celo/contractkit";
 import BigNumber from "bignumber.js";
 
+import quotesAbi from "./contracts/quotes.abi.json";
 import IERC from "./contracts/IERC.abi.json";
 import { Quotes } from './components/quotes';
 
@@ -19,7 +20,7 @@ const helpfullnessPrice = "1";
 
 
 
-const contractAddress = "0xB88F2aB24e4e619150FFf63F20bAcDb04265D479";
+const contractAddress = "0x0e41696A61568A8bd1aE0986310aC5eAd815E3B7";
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
@@ -55,12 +56,14 @@ function App() {
     }
   };
 
+  
+
   const getBalance = useCallback(async () => {
     try {
       const balance = await kit.getTotalBalance(address);
       const USDBalance = balance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2);
 
-      const contract = new kit.web3.eth.Contract(quotes, contractAddress);
+      const contract = new kit.web3.eth.Contract(quotesAbi, contractAddress);
       setcontract(contract);
       setcUSDBalance(USDBalance);
     } catch (error) {
@@ -130,7 +133,7 @@ function App() {
       await cUSDContract.methods
         .approve(contractAddress, cost)
         .send({ from: address });
-      await contract.methods.increaseHelpfullness(_index, cost).send({ from: address });
+      await contract.methods.addHelpfullness(_index, cost).send({ from: address });
       getQuotes();
       getBalance();
       alert("you have successfully donated to the writer");
