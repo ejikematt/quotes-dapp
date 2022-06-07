@@ -12,15 +12,8 @@ import BigNumber from "bignumber.js";
 
 import IERC from "./contracts/IERC.abi.json";
 import { Quotes } from './components/quotes';
+import {ERC20_DECIMALS, helpfullnessPrice, contractAddress, cUSDContractAddress} from "./constants"
 
-
-const ERC20_DECIMALS = 18;
-const helpfullnessPrice = "1";
-
-
-
-const contractAddress = "0xB88F2aB24e4e619150FFf63F20bAcDb04265D479";
-const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
 
@@ -74,7 +67,7 @@ function App() {
     const quotesLength = await contract.methods.getQuotesLength().call();
     const quotes = [];
     for (let index = 0; index < quotesLength; index++) {
-      let _quotes = new Promise(async (resolve, reject) => {
+      let _quotes = new Promise(async (resolve) => {
       let quote = await contract.methods.readQuotes(index).call();
 
         resolve({

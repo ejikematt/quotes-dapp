@@ -25,11 +25,12 @@ contract Motivate {
         uint helpfull;
     }
 
-    mapping (uint => Quote) internal quotes;
+    mapping (uint => Quote) public quotes;
 
     function writeQuote(
         string memory _text
     ) public {
+        require(bytes(_text).length >0, "text should be greater than 0");
         uint _helpfull = 0;
         quotes[quotesLength] = Quote(
             payable(msg.sender),
@@ -39,18 +40,7 @@ contract Motivate {
         quotesLength++;
     }
 
-    function readQuotes(uint _index) public view returns (
-        address payable,
-        string memory, 
-        uint
-    ) {
-        return (
-             quotes[_index].owner,
-            quotes[_index].text, 
-             quotes[_index].helpfull
-           
-        );
-    }
+
     
 function editQuote(uint _index, string memory _text) public {
     require(msg.sender == quotes[_index].owner, "you cannot edit this quote");
