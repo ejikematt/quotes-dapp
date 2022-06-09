@@ -1,4 +1,3 @@
-
 import './App.css';
 
 import { NavigationBar } from './components/navBar';
@@ -20,7 +19,7 @@ const helpfullnessPrice = "1";
 
 
 
-const contractAddress = "0x0e41696A61568A8bd1aE0986310aC5eAd815E3B7";
+const contractAddress = "0xb66812b2a5325e83352Bd23308916aC6668D5cbA";
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
@@ -136,10 +135,23 @@ function App() {
       await contract.methods.addHelpfullness(_index, cost).send({ from: address });
       getQuotes();
       getBalance();
-      alert("you have successfully donated to the writer");
+      alert("you have successfully donated to the Author");
     } catch (error) {
       alert(error);
     }};
+
+    const deleteQuote = async (
+      _index
+    ) => {
+      try {
+        await contract.methods
+          .deleteQuote(_index)
+          .send({ from: address });
+        getQuotes();
+      } catch (error) {
+        alert(error);
+      }
+    };
 
 
   useEffect(() => {
@@ -161,7 +173,7 @@ function App() {
   return (
     <div className="App">
       <NavigationBar cUSDBalance={cUSDBalance} />
-      <Quotes userWallet={address} quotes={quotes} editQuote={editQuote} addHelpfullness={addHelpfullness}/>
+      <Quotes userWallet={address} quotes={quotes} editQuote={editQuote} addHelpfullness={addHelpfullness} deleteQuote={deleteQuote}/>
       <AddQuote addQuote={addQuote} />
     </div>
   );

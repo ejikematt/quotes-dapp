@@ -27,7 +27,9 @@ contract Motivate {
 
     mapping (uint => Quote) internal quotes;
 
-    function writeQuote(
+
+// adding a new quote 
+function writeQuote(
         string memory _text
     ) public {
         uint _helpfull = 0;
@@ -38,8 +40,8 @@ contract Motivate {
         );
         quotesLength++;
     }
-
-    function readQuotes(uint _index) public view returns (
+   // reading quotes
+function readQuotes(uint _index) public view returns (
         address payable,
         string memory, 
         uint
@@ -48,20 +50,29 @@ contract Motivate {
              quotes[_index].owner,
             quotes[_index].text, 
              quotes[_index].helpfull
+           
         );
     }
-    
+   // edithing quotes 
 function editQuote(uint _index, string memory _text) public {
     require(msg.sender == quotes[_index].owner, "you cannot edit this quote");
     quotes[_index].text = _text;
 }
-
-function increaseHelpfullness(uint _index) private {
-    quotes[_index].helpfull ++;
+ // increasing the helpfullness of quotes
+function increaseHelpfullness(uint _index) internal {
+    quotes[_index].helpfull++;
 }
+// deleting quotes
+ function deleteQuote(uint _index) external {
+	        require(msg.sender == quotes[_index].owner, "cant delete quote");         
+            quotes[_index] = quotes[quotesLength - 1];
+            delete quotes[quotesLength - 1];
+            quotesLength--; 
+	    }
 
-    function addHelpfullness(uint _index, uint _price) public payable  {
-        require(_price == 1, "can only tip 1 cUSD");
+        // adding to the number of helpfullness by paying 1cUSD or more
+function addHelpfullness(uint _index, uint _price) public payable  {
+        require(_price >= 1, "must be 1 cUSD");
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
@@ -72,8 +83,8 @@ function increaseHelpfullness(uint _index) private {
         );
         increaseHelpfullness(_index);
     }
-    
-    function getQuotesLength() public view returns (uint) {
+    // getting the length of quotes
+function getQuotesLength() public view returns (uint) {
         return (quotesLength);
     }
 }
